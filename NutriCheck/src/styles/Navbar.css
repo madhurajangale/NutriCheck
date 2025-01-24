@@ -3,13 +3,19 @@
     
     padding: 10px 20px;
     box-shadow: 0 0 10px 0 rgba(17, 16, 16, 0.3);
-    height: 35px;
+    height: 69px;
     position:sticky;
     
     display: flex;
     flex-direction: row;
     justify-items: center;
     align-self: start;
+  }
+
+  .logo{
+    height: 60px;
+    width: 170px;
+    margin-top: 0px;
   }
 
   ul {
@@ -21,14 +27,23 @@
   }
 
   li {
-    margin: 0 10px;
+    
+    margin-bottom: 5px;
+  }
+
+  .links{
+    margin-top: 29px;
+    margin-left: 5px;
+    margin-bottom: 5px;
   }
 
   .links a{
     color: rgb(186, 250, 237);
     text-decoration: none;
     padding: 30px 20px;
-    font-size: large;
+    font-size: larger;
+
+  
   }
 
   .btn {
@@ -46,7 +61,8 @@
     justify-content: center;
     align-items: center;
     margin-right: -6px;
-    margin-left: 550px;
+    margin-left: 380px;
+    margin-top: 20px;
   }
 
   .btn-container{

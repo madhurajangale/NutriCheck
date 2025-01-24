@@ -37,26 +37,26 @@ remote: Resolving deltas: 100% (1/1), completed with 1 local object.</p>
   <footer className="footer-container" id="contact">
   <div className="footer-content">
     <div className="footer-section">
-      <h4 data-key="poweredBy">Powered By</h4>
-      <p data-key="govOfIndia">Government Of India</p>
+      <h4 >NutriCheck</h4>
+      <p >Your trusted partner in nutrition and health.</p>
     </div>
     <div className="footer-section">
-      <h4 data-key="quickLinks">Quick Links</h4>
-      <p><Link to="/" data-key="home">Home</Link></p>
-      <p><Link to="/category" data-key="schemes">Schemes</Link></p>
-      <p><a href="#about" data-key="about">About</a></p>
-      <p><a href="#faq" data-key="faq">FAQs</a></p>
-      <p><a href="#contact" data-key="contact">Contact Us</a></p>
+      <h4 >Quick Links</h4>
+      <p><Link to="/" >Home</Link></p>
+      <p><Link to="/category" >Nutrition</Link></p>
+      <p><a href="#about" >About</a></p>
+      <p><a href="#faq" >FAQs</a></p>
+      <p><a href="#contact" >Contact Us</a></p>
     </div>
     <div className="footer-section">
-      <h4 data-key="contactUs">Contact Us</h4>
-      <p data-key="email">Email: info@eyojana.gov</p>
-      <p data-key="phone">Phone: +123 456 7890</p>
-      <p data-key="address">Address: 123 Government Building, Mumbai</p>
+      <h4 >Contact Us</h4>
+      <p >Email: info@nutricheck.gmail.com</p>
+      <p >Phone: +123 456 7890</p>
+      <p >Address: 123 Kasabela Building, Mumbai</p>
     </div>
   </div>
   <div className="footer-bottom">
-    <p data-key="copyright">© 2025 E-Yojana. All rights reserved.</p>
+    <p >© 2025 NutriCheck. All rights reserved.</p>
   </div>
 </footer>
 

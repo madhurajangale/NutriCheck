@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import "../styles/details.css";
 
 const ProductInfo = () => {
   const [productName, setProductName] = useState('');
@@ -22,17 +23,24 @@ const ProductInfo = () => {
 
   return (
     <div>
-      <h1>Search Product</h1>
+      <h1 style={{ fontSize: '25px', color: '#2f524d'}}>Search Product</h1>
       <input
+      style={{ width: '300px', height: '30px', fontSize: '20px', padding: '5px'}}
         type="text"
         value={productName}
         onChange={(e) => setProductName(e.target.value)}
         placeholder="Enter product name"
       />
-      <button onClick={fetchProductData}>Search</button>
+      <button style={{width: '100px', height: '40px', fontSize: '20px', padding: '5px', backgroundColor: '#2f524d', color: 'white', border: 'none', borderRadius: '5px', marginLeft: '10px'}}
+      onClick={fetchProductData}>Search</button>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
+      {productData.image_url && (
+            <div>
+              <h3>Image</h3>
+              <img src={productData.image_url} alt={productData.product_name} style={{ width: '200px' }} />
+            </div>
+          )}
       {productData && (
         <div>
           <h2>Product Information</h2>
@@ -87,12 +95,7 @@ const ProductInfo = () => {
             <li>Salt: {productData.nutriments?.['salt_100g']} g per 100g</li>
           </ul>
 
-          {productData.image_url && (
-            <div>
-              <h3>Image</h3>
-              <img src={productData.image_url} alt={productData.product_name} style={{ width: '200px' }} />
-            </div>
-          )}
+          
         </div>
       )}
     </div>

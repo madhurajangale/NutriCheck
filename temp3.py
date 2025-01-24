@@ -4,15 +4,15 @@ import requests
 import json
 
 def get_product_data(product_name):
-    # API Endpoint
+   
     url = f"https://world.openfoodfacts.org/cgi/search.pl?search_terms={product_name}&search_simple=1&action=process&json=1"
     
-    # Fetch Data from API
+    
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
         if data.get("products"):
-            product = data["products"][0]  # Extract the first product
+            product = data["products"][0]  
             return {
                 "product_name": product.get("product_name"),
                 "nutri_score": product.get("nutriscore_grade"),
@@ -27,11 +27,11 @@ def get_product_data(product_name):
         return f"Error: {response.status_code}"
 
 def main():
-    product_name = "Maggie Chicken noodles"  # Example product name
+    product_name = "Maggie Chicken noodles"  
     product_data = get_product_data(product_name)
     
     if isinstance(product_data, dict):
-        # Pretty-print all product data
+        
         print(json.dumps(product_data, indent=4))
     else:
         print(product_data)

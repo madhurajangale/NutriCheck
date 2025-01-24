@@ -92,7 +92,7 @@ def check_low_nutrients(nutrients):
 
 def main():
     
-    product_name = "Pizza express margherita"
+    product_name = "Maggi Masala Noodles"
     products = search_product_by_name(product_name)
     
     if products:

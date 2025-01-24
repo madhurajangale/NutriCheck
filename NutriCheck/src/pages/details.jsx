@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import DisplayRecommendations from './alternates';
 
 const ProductInfo = () => {
   const [productName, setProductName] = useState('');
@@ -98,5 +99,6 @@ const ProductInfo = () => {
     </div>
   );
 };
+
 
 export default ProductInfo;

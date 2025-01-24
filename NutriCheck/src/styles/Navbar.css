@@ -1,0 +1,56 @@
+.navbar {
+    background-color: #2f524d;
+    
+    padding: 10px 20px;
+    box-shadow: 0 0 10px 0 rgba(17, 16, 16, 0.3);
+    height: 35px;
+    position:sticky;
+    
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-self: start;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  li {
+    margin: 0 10px;
+  }
+
+  .links a{
+    color: rgb(186, 250, 237);
+    text-decoration: none;
+    padding: 30px 20px;
+    font-size: large;
+  }
+
+  .btn {
+    background-color: rgb(186, 250, 237);
+    color:#2f524d;
+    width: 120px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    font-size: large;
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: -6px;
+    margin-left: 550px;
+  }
+
+  .btn-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:flex-end;
+  }

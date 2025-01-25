@@ -57,21 +57,23 @@ def search_product_by_name(product_name):
         data = response.json()
         if data.get("products"):
             return data["products"]
+
     return None
 
 class CombinedView(View):
     def get(self, request, email, product_name="Nutella"):
         try:
+            # Validate email input
             if not email:
                 return JsonResponse({"status": "error", "message": "Email is required."}, status=400)
-            try:
 
-                print(email)
+            # Fetch user data
+            try:
                 user = User.objects.get(email=email)
-                print(user)
             except User.DoesNotExist:
                 return JsonResponse({"status": "error", "message": "User not found."}, status=404)
 
+            # Extract user profile details
             user_data = {
                 'username': user.username,
                 'email': user.email,
@@ -84,19 +86,48 @@ class CombinedView(View):
                 'height': user.height,
                 'weight': user.weight,
             }
-            height = user.height  
-            weight = user.weight 
+
+            # Calculate BMI and BMI category
+            height = user.height  # in cm
+            weight = user.weight  # in kg
             bmi = weight / ((height / 100) ** 2)
             bmi_category = get_bmi_category(bmi)
 
+            # Fetch product data
             products = search_product_by_name(product_name)
             if not products:
                 return JsonResponse({"status": "error", "message": "No product found for the given name."}, status=404)
 
             product = products[0]
             nutrients = product.get("nutriments", {})
-            suitability = evaluate_product_suitability(bmi_category, nutrients)
+            ingredients = product.get("ingredients_text", "").lower()  # Handle missing ingredients gracefully
 
+            # Evaluate product suitability based on BMI
+            bmi_suitability = evaluate_product_suitability(bmi_category, nutrients)
+
+            # Additional checks for user allergies and diseases
+            issues = []
+
+            # Check for allergies
+            if user.allergies:
+                for allergen in user.allergies:  # Iterate over the list of allergies
+                    if allergen.lower() in ingredients:
+                        issues.append(f"Contains allergen '{allergen}' you are sensitive to.")
+
+            # Check for diseases
+            if user.diseases:
+                if "diabetes" in [disease.lower() for disease in user.diseases] and nutrients.get("sugars_100g", 0) > 5:
+                    issues.append("High in sugar, not suitable for diabetes.")
+                if "hypertension" in [disease.lower() for disease in user.diseases] and nutrients.get("salt_100g", 0) > 1.5:
+                    issues.append("High in salt, not suitable for hypertension.")
+
+            # Decide final suitability
+            if issues:
+                suitability = "Not suitable due to: " + "; ".join(issues)
+            else:
+                suitability = bmi_suitability
+
+            # Build and return the combined response
             return JsonResponse({
                 "status": "success",
                 "user_profile": {
@@ -108,6 +139,7 @@ class CombinedView(View):
                     "product_name": product.get("product_name", "N/A"),
                     "brand": product.get("brands", "N/A"),
                     "nutri_score": product.get("nutriscore_grade", "N/A").upper(),
+                    "ingredients": product.get("ingredients_text", "N/A"),
                     "suitability": suitability,
                 },
             })
@@ -126,6 +158,7 @@ class SignupView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class LoginView(APIView):
     def post(self, request):
+        print("reached")
         email = request.data.get('email')
         password = request.data.get('password')
         print(password)

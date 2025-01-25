@@ -4,6 +4,7 @@ import { Card, Grid, Typography, TextField, Button, Paper, CircularProgress } fr
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { Link } from 'react-router-dom'
+import { useAuth } from "../context/AuthContext";
 import '../styles/details.css';
 import ingredients from '../images/ingredients.png';
 import allergy from '../images/allergy.png';
@@ -13,7 +14,9 @@ const ProductScan = () => {
   const [productData, setProductData] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
- 
+  const [alternatives, setAlternatives] = useState([]);
+  const { user } = useAuth();
+  const [userData, setUserData] = useState(null); 
 
   const fetchProductData = async () => {
     setLoading(true);
@@ -23,13 +26,38 @@ const ProductScan = () => {
       });
       setProductData(response.data.products[0]);
       setError('');
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/user/profile/${user}`);
+        console.log(response)
+        if (!response.ok) {
+          throw new Error('User not found');
+        }
+
+        const data = await response.json();
+        setUserData(data);  // Set user data to state
+      } catch (error) {
+        setError(error.message);  // Handle errors
+      }
+      // const alternativesResponse = await axios.get('http://127.0.0.1:5001/api/alternatives', {
+      //   params: {
+      //     product_name: 'Coca cola',  // Example product name
+      //     category: 'beverages',  // Example category
+      //     allergens: ['gluten', 'milk'],  // Example allergens
+      //     min_nutri_score: 50,
+      //     max_carbon_footprint: 2.0,
+      //   }
+      // });
+      
+    //   console.log(alternativesResponse)      
     } catch (err) {
       setProductData(null);
       setError(err.response?.data?.error || 'Something went wrong!');
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+
 
 
   const getStyle = (scoreType, grade) => {

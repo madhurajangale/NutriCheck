@@ -8,7 +8,7 @@ import Login from './Auth/Login';
 import UserSignUp from './Auth/Signup';
 import {  AuthProvider } from "./context/AuthContext";
 import Imgscan from './components/imgscan';
-
+import WebcamCapture from './components/WebCamCapture';
 function App() {  
   return (
     <div className="App">
@@ -20,8 +20,8 @@ function App() {
           <Route path='/recommendations' element={<Recommendations/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<UserSignUp/>}/>
-          
           <Route path='/imgscan' element={<Imgscan/>}/>
+          <Route path='/webcam' element={<WebcamCapture/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>

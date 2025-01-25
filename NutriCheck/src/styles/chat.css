@@ -1,0 +1,133 @@
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+  
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh; /* Full height */
+    margin: 0 auto;
+    
+    padding: 20px;
+    background-color: #f1f1f1;
+  }
+  
+  .chat-header {
+    text-align: center;
+    
+    flex-shrink: 0;
+  }
+  
+  .messages-container {
+    flex-grow: 1; /* Take up remaining space */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    
+    flex-direction: column;
+  }
+  
+  .message {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 16px;
+    align-items: flex-start;
+  }
+  
+  .my-message {
+    align-self: flex-end;
+    background-color: #e7f9ce; /* Light green for user's messages */
+    color: #333;
+    border-radius: 10px;
+      padding: 10px;
+      text-align: left;
+  }
+  
+  .other-message {
+    align-self: flex-start;
+    background-color: #f1f1f1; /* Light gray for other users' messages */
+    color: #333;
+    border-radius: 10px;
+      padding: 10px;
+      text-align: left;
+  }
+  
+  .admin-message {
+    background-color: #ffe5b4; /* Light orange */
+    border: 2px solid #ff9f00; /* Orange border */
+    border-radius: 10px;
+    align-self: flex-start;
+    padding: 5px;
+  }
+  
+  .message-box {
+    border-radius: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+  
+   
+    word-wrap: break-word;
+    
+    
+  }
+  
+  .message-box strong {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  /* Timestamp styles */
+  .message-box small {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+    text-align: right; /* Align timestamp to the right */
+  }
+  
+  
+  .input-container {
+    display: flex;
+    /* margin-left: 5rem; */
+    margin-right: 5rem;
+    width: 70%;;
+    align-items: center; /* Center align the input fields and button */
+    gap: 10px;
+    flex-shrink: 0; /* Ensure it doesn't shrink */
+  }
+  
+  .username-input{
+    width: 20%; /* Make the input fields shorter */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  .message-input {
+    width: 80%; /* Make the input fields shorter */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .send-button {
+    width: 45px; /* Adjust button width */
+    padding: 10px;
+    background-color: #8BC34A;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .send-button:hover {
+    background-color: #779307;
+  }

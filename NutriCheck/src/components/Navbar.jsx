@@ -11,13 +11,12 @@ const Navbar = () => {
            <ul>
             <li ><img src={nutrilogo} className="logo"></img></li>
             <li className="links"><Link to="/">Home</Link></li>
-            <li className="links"><Link to="/">About</Link></li>
-            <li className="links"><Link to="/">Community Chat</Link></li>
+            <li className="links"><Link to="/chat">Community Chat</Link></li>
             <li className="links"><Link to="/">History</Link></li>
             <li className="links"><Link to="/details">Scan</Link></li>
             <li className="links"><Link to="/">Diet Assessment</Link></li>
             </ul> 
-            <div className='btn-container'><button className="btn">Login</button></div>
+            <div className='btn-container'><Link to="/login"><button className="btn">Login</button></Link></div>
         </div>
     </div>
   )

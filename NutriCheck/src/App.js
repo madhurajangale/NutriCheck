@@ -20,7 +20,6 @@ function App() {
           <Route path='/recommendations' element={<Recommendations/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/signup' element={<UserSignUp/>}/>
-          
           <Route path='/imgscan' element={<Imgscan/>}/>
           <Route path='/monthlydiet' element={<Monthlydiet/>}/>
         </Routes>

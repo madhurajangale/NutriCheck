@@ -93,7 +93,7 @@ def main():
     """
     Main function to execute the recommendation process.
     """
-    product_name = "Coca cola"
+    product_name = "cadbury shots"
     product = fetch_product_details(product_name)
 
     if product:

@@ -15,17 +15,18 @@ class CustomAuthBackend(BaseBackend):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
-class CustomAdminEmailBackend(BaseBackend):
+class CustomEmailBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            admin = Admin.objects.get(email=username) 
-            if check_password(password, admin.password):
-                return admin
-        except Admin.DoesNotExist:
+            user = User.objects.get(email=username)
+            if check_username(email, user.email):
+                return user
+        except User.DoesNotExist:
             return None
 
     def get_user(self, user_id):
         try:
-            return Admin.objects.get(pk=user_id)
-        except Admin.DoesNotExist:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
             return None
+

@@ -1,104 +1,137 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import DisplayRecommendations from './alternates';
+import { Card, Grid, Typography, TextField, Button, Paper, CircularProgress } from '@mui/material';
+import { Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
 
-const ProductInfo = () => {
+const ProductScan = () => {
   const [productName, setProductName] = useState('');
   const [productData, setProductData] = useState(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const fetchProductData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get('http://127.0.0.1:5000/api/product', {
         params: { name: productName },
       });
-      console.log(response);
-      setProductData(response.data.products[0]); 
+      setProductData(response.data.products[0]);
       setError('');
     } catch (err) {
       setProductData(null);
       setError(err.response?.data?.error || 'Something went wrong!');
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
-    <div>
-      <h1>Search Product</h1>
-      <input
-        type="text"
-        value={productName}
-        onChange={(e) => setProductName(e.target.value)}
-        placeholder="Enter product name"
-      />
-      <button onClick={fetchProductData}>Search</button>
+  const renderNutrientChart = () => {
+    if (!productData || !productData.nutriments) return null;
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    const labels = Object.keys(productData.nutriments || {});
+    const values = Object.values(productData.nutriments || {});
+
+    const data = {
+      labels,
+      datasets: [
+        {
+          label: 'Nutrients per 100g',
+          data: values,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        },
+      ],
+    };
+
+    return <Bar data={data} />;
+  };
+
+  return (
+    <Paper elevation={3} style={{ padding: '20px', margin: '20px' }}>
+      <Typography variant="h4" gutterBottom align="center">
+        Product Analysis
+      </Typography>
+
+      <Grid container spacing={3} justifyContent="center" style={{ marginBottom: '20px' }}>
+        <Grid item xs={12} md={6}>
+          <TextField
+            fullWidth
+            label="Enter product name"
+            variant="outlined"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={fetchProductData}
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={24} /> : 'Search'}
+          </Button>
+        </Grid>
+      </Grid>
+
+      {error && (
+        <Typography color="error" align="center">
+          {error}
+        </Typography>
+      )}
 
       {productData && (
-        <div>
-          <h2>Product Information</h2>
-          <p><strong>Name:</strong> {productData.product_name || 'N/A'}</p>
-          <p><strong>Brand:</strong> {productData.brands || 'N/A'}</p>
-          <p><strong>Categories:</strong> {productData.categories || 'N/A'}</p>
-          <p><strong>Eco-Score:</strong> {productData.ecoscore_grade?.toUpperCase() || 'N/A'}</p>
-          <p><strong>Nutri-Score:</strong> {productData.nutriscore_grade?.toUpperCase() || 'N/A'}</p>
-          <p><strong>Allergens:</strong> {productData.allergens || 'N/A'}</p>
-          <p><strong>Food Groups:</strong> {productData.food_groups || 'N/A'}</p>
-          <p><strong>Barcode:</strong> {productData.code || 'N/A'}</p>
-          <p><strong>Countries Available:</strong> {productData.countries || 'N/A'}</p>
-           <p><strong>Carbon Footprint</strong>{productData.ecoscore_data.agribalyse.co2_total}</p>
-          <h3>Ingredients</h3>
-          <p>{productData.ingredients_text_en || 'No ingredients information available.'}</p>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6}>
+            <Card style={{ padding: '20px' }}>
+              <Typography align="left" variant="h6">
+                General Information
+              </Typography>
+              <Typography align="left"><strong>Name:</strong> {productData.product_name || 'N/A'}</Typography>
+              <Typography align="left"><strong>Brand:</strong> {productData.brands || 'N/A'}</Typography>
+              <Typography align="left"><strong>Categories:</strong> {productData.categories || 'N/A'}</Typography>
+              <Typography align="left"><strong>Eco-Score:</strong> {productData.ecoscore_grade?.toUpperCase() || 'N/A'}</Typography>
+              <Typography align="left"><strong>Nutri-Score:</strong> {productData.nutriscore_grade?.toUpperCase() || 'N/A'}</Typography>
+              <Typography align="left"><strong>Barcode:</strong> {productData.code || 'N/A'}</Typography>
+              <Typography align="left"><strong>Carbon Footprint:</strong> {productData.ecoscore_data?.agribalyse?.co2_total || 'N/A'}</Typography>
+            </Card>
+          </Grid>
 
-          <h3>Nutrient Levels</h3>
-          <ul>
-            {Object.keys(productData.nutrient_levels || {}).map((nutrient, index) => (
-              <li key={index}>
-                <strong>{nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}:</strong> {productData.nutrient_levels[nutrient] || 'N/A'}
-              </li>
-            ))}
-          </ul>
+          <Grid item xs={12} md={6}>
+            <Card style={{ padding: '20px' }}>
+              <Typography variant="h6">Ingredients</Typography>
+              <Typography>{productData.ingredients_text_en || 'No ingredients information available.'}</Typography>
 
-          <h3>Nutrient Levels Tags</h3>
-          <ul>
-            {productData.nutrient_levels_tags?.map((tag, index) => (
-              <li key={index}>{tag}</li>
-            ))}
-          </ul>
+              <Typography variant="h6" style={{ marginTop: '20px' }}>
+                Allergens
+              </Typography>
+              <Typography>{productData.allergens || 'N/A'}</Typography>
+            </Card>
+          </Grid>
 
-          <h3>Nutrients</h3>
-<ul>
-  {Object.entries(productData.nutriments || {}).map(([key, value], index) => (
-    <li key={index}>
-      <strong>{key.replace(/_/g, ' ').toUpperCase()}:</strong> {value} {key.includes('energy') || key.includes('carbohydrates') || key.includes('fat') ? 'g' : ''}
-    </li>
-  ))}
-</ul>
+          <Grid item xs={12}>
+            <Card style={{ padding: '20px' }}>
+              <Typography variant="h6">Nutrient Levels</Typography>
+              <Grid container spacing={2}>
+                {Object.entries(productData.nutrient_levels || {}).map(([key, value]) => (
+                  <Grid item xs={6} md={3} key={key}>
+                    <Typography><strong>{key.replace(/_/g, ' ')}:</strong> {value || 'N/A'}</Typography>
+                  </Grid>
+                ))}
+              </Grid>
+            </Card>
+          </Grid>
 
-
-          <h3>Nutrients</h3>
-          <ul>
-            <li>Energy: {productData.nutriments?.['energy-kcal_100g']} kcal per 100g</li>
-            <li>Carbohydrates: {productData.nutriments?.['carbohydrates_100g']} g per 100g</li>
-            <li>Fat: {productData.nutriments?.['fat_100g']} g per 100g</li>
-            <li>Saturated Fat: {productData.nutriments?.['saturated-fat_100g']} g per 100g</li>
-            <li>Protein: {productData.nutriments?.['proteins_100g']} g per 100g</li>
-            <li>Sugars: {productData.nutriments?.['sugars_100g']} g per 100g</li>
-            <li>Fiber: {productData.nutriments?.['fiber_100g']} g per 100g</li>
-            <li>Salt: {productData.nutriments?.['salt_100g']} g per 100g</li>
-          </ul>
-
-          {productData.image_url && (
-            <div>
-              <h3>Image</h3>
-              <img src={productData.image_url} alt={productData.product_name} style={{ width: '200px' }} />
-            </div>
-          )}
-        </div>
+          <Grid item xs={12}>
+            <Card style={{ padding: '20px' }}>
+              <Typography variant="h6">Nutrient Analysis</Typography>
+              {renderNutrientChart()}
+            </Card>
+          </Grid>
+        </Grid>
       )}
-    </div>
+    </Paper>
   );
 };
 
-
-export default ProductInfo;
+export default ProductScan;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, Grid, Typography, TextField, Button, Paper, CircularProgress } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { Link } from 'react-router-dom'
 
 const ProductScan = () => {
   const [productName, setProductName] = useState('');
@@ -71,6 +72,13 @@ const ProductScan = () => {
           >
             {loading ? <CircularProgress size={24} /> : 'Search'}
           </Button>
+        </Grid>
+        <Grid item>
+          <Link to ="/imgscan"><Button
+            
+          >
+            scan
+          </Button></Link>
         </Grid>
       </Grid>
 

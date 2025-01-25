@@ -8,6 +8,7 @@ function Recommendations() {
     useEffect(() => {
         axios.get('http://localhost:5001/api/recommendations')
             .then(response => {
+                console.log(response)
                 setRecommendations(response.data);
             })
             .catch(error => {

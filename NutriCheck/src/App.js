@@ -8,6 +8,7 @@ import Login from './Auth/Login';
 import UserSignUp from './Auth/Signup';
 import {  AuthProvider } from "./context/AuthContext";
 import Imgscan from './components/imgscan';
+import Monthlydiet from './pages/Monthlydiet';
 function App() {  
   return (
     <div className="App">
@@ -21,6 +22,7 @@ function App() {
           <Route path='/signup' element={<UserSignUp/>}/>
           
           <Route path='/imgscan' element={<Imgscan/>}/>
+          <Route path='/monthlydiet' element={<Monthlydiet/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>

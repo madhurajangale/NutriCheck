@@ -11,8 +11,7 @@ const Navbar = () => {
            <ul>
             <li ><img src={nutrilogo} className="logo"></img></li>
             <li className="links"><Link to="/">Home</Link></li>
-            <li className="links"><Link to="/">About</Link></li>
-            <li className="links"><Link to="/">Community Chat</Link></li>
+            <li className="links"><Link to="/chat">Community Chat</Link></li>
             <li className="links"><Link to="/">History</Link></li>
             <li className="links"><Link to="/details">Scan</Link></li>
             <li className="links"><Link to="/monthlydiet">Diet Assessment</Link></li>

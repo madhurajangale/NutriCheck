@@ -2,8 +2,13 @@ import React from 'react'
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom'
 import "../styles/Home.css"
-import features from '../images/features.png'
 import Landing from '../components/Landing.jsx';
+import Course from '../components/Course.jsx';
+import a from '../images/prod_analysis.png';
+import b from '../images/recommendation.png';
+import c from '../images/recycle.png';
+import d from '../images/review.png';
+import e from '../images/risk.png';
 
 const Home = () => {
   return (
@@ -14,8 +19,21 @@ const Home = () => {
         <div class="container">
     <Landing />
   </div>
-        <section id="about">
-    <div className='nutriabt' style={{ marginTop: '3rem'}}align='center'>
+        
+  <section>
+  <h1 style={{ fontSize: '2.2rem', color: '#2f524d' } }> Features</h1>
+  <div className='featurescont'>
+  
+  <Course id="co1" imgSrc={a} description="Product Analysis" />
+  <Course id="co2" imgSrc={b} description="Recommendations" />
+  <Course id="co3" imgSrc={c} description="Sustainability Analysis" />
+  <Course id="co4" imgSrc={d} description="Reviews" />
+  <Course id="co5" imgSrc={e} description="Health Risk Assessment" />
+      </div>
+  </section>
+
+  <section id="about">
+    <div className='nutri' style={{ marginTop: '3rem'}}align='center'>
       <h1 style={{ fontSize: '2.2rem'} }>About us</h1>
       <p style={{ fontSize: '20px', margin: '20px' } }>Delta compression using up to 12 threads        
 Compressing objects: 100% (28/28), done.
@@ -26,13 +44,7 @@ remote: Resolving deltas: 100% (1/1), completed with 1 local object.</p>
     </div>
 
   </section>
-  <section>
-  <div className='featurescont'>
-  <h1 style={{ fontSize: '2.2rem', color: '#2f524d' } }> Features</h1>
-      <img src={features} className="features" alt="..." />
-      
-      </div>
-  </section>
+
   <section>
   <footer className="footer-container" id="contact">
   <div className="footer-content">

@@ -1,7 +1,11 @@
 import requests
+from flask import Flask, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app) 
 
 SEARCH_URL = "https://world.openfoodfacts.org/cgi/search.pl"
-
 
 def fetch_product_details(product_name):
     """
@@ -21,7 +25,6 @@ def fetch_product_details(product_name):
     except requests.RequestException as e:
         print(f"Error fetching product details: {e}")
         return None
-
 
 def search_alternatives(category, allergens, min_nutri_score, max_carbon_footprint):
     """
@@ -49,7 +52,6 @@ def search_alternatives(category, allergens, min_nutri_score, max_carbon_footpri
                     carbon_footprint = product.get("ecoscore_data", {}).get("agribalyse", {}).get("co2_total", float("inf"))
                     product_allergens = product.get("allergens_tags", [])
 
-                    # if not set(allergens).intersection(set(product_allergens)):
                     if nutri_score >= min_nutri_score or carbon_footprint < max_carbon_footprint:
                             alternatives.append({
                                 "product_name": product.get("product_name", "Unknown"),
@@ -60,38 +62,16 @@ def search_alternatives(category, allergens, min_nutri_score, max_carbon_footpri
                 except Exception as e:
                     print(f"Error processing product: {e}")
         
-        
         alternatives.sort(key=lambda x: (-x["nutri_score"], x["carbon_footprint"]))
         return alternatives
     except requests.RequestException as e:
         print(f"Error fetching alternatives: {e}")
         return []
 
-
-def display_recommendations(alternatives):
+@app.route('/api/recommendations', methods=['GET'])
+def get_recommendations():
     """
-    Display the list of alternative products.
-    """
-    if not alternatives:
-        print("No alternatives found.")
-        return
-
-    print("\nRecommended Alternatives (Prioritized by Nutri-Score):")
-    for i, alt in enumerate(alternatives, start=1):
-        print(f"{i}. {alt['product_name']}")
-        print(f"   Nutri-Score: {alt['nutri_score']}")
-        print(f"   Carbon Footprint: {alt['carbon_footprint']} kg CO2")
-        packaging = alt.get('packaging', 'N/A')
-        print(f"   Packaging: {', '.join(packaging) if isinstance(packaging, list) else packaging}")
-        allergens = alt.get('allergens', 'None') 
-        print(f"   Allergens: {', '.join(allergens) if isinstance(allergens, list) else allergens}")
-
-        print(f"   More Info: {alt['url']}\n")
-
-
-def main():
-    """
-    Main function to execute the recommendation process.
+    API endpoint that returns product recommendations based on a scanned product.
     """
     product_name = "cadbury shots"
     product = fetch_product_details(product_name)
@@ -100,20 +80,10 @@ def main():
         product = product[0]
         categories = product.get("categories_tags", [None])
         category = categories[-2] if categories else None
-        print("category: ", category)
 
         allergens = product.get("allergens_tags", [])
         nutri_score = product.get("nutriscore_score", 100)
         carbon_footprint = product.get("ecoscore_data", {}).get("agribalyse", {}).get("co2_total", float("inf"))
-
-        print(f"\nScanned Product: {product.get('product_name', 'Unknown')}")
-        print(f"Brand: {product.get('brands', 'N/A')}")
-        print(f"Quantity: {product.get('quantity', 'N/A')}")
-        print(f"Serving Size: {product.get('serving_size', 'N/A')}")
-        print(f"Packaging: {', '.join(product.get('packaging_tags', [])) if product.get('packaging_tags') else 'N/A'}")
-        print(f"Allergens: {', '.join(allergens) if allergens else 'None'}")
-        print(f"Nutri-Score: {nutri_score}")
-        print(f"Carbon Footprint: {carbon_footprint} kg CO2\n")
 
         if category:
             alternatives = search_alternatives(
@@ -122,12 +92,12 @@ def main():
                 min_nutri_score=nutri_score,
                 max_carbon_footprint=carbon_footprint,
             )
-            display_recommendations(alternatives)
+            print(alternatives)
+            return jsonify(alternatives)  # Send recommendations as a JSON response
         else:
-            print("Category information is missing for this product.")
+            return jsonify({"error": "Category information is missing for this product."})
     else:
-        print("Failed to retrieve product details.")
-
+        return jsonify({"error": "Failed to retrieve product details."})
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True, port=5001)

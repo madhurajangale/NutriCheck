@@ -43,7 +43,7 @@ function App() {
         
         <Route path="/pantry" element={<Pantrygame />} />
 
-        <Route path="/monthlydiet" element={<Dietgame />} />
+        <Route path="/games" element={<Dietgame />} />
 
         </Routes>
       </BrowserRouter>

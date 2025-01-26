@@ -19,7 +19,22 @@ const Home = () => {
         <div class="container">
     <Landing />
   </div>
-        
+  <section id="about">
+    <div className='nutri' align='center'>
+      <p style={{ fontSize: '2.2rem', color: '#2f524d', fontWeight: 'bolder'  } }>About us</p>
+      <p style={{ fontSize: '20px', margin: '20px', color: '#2f524d'  } }>Welcome to NutriCheck, your ultimate destination for comprehensive nutrition and health information. Our mission is to empower individuals to make informed decisions about their diet and overall well-being by providing accurate, reliable, and up-to-date data on a wide range of products.</p>
+      
+    </div>
+
+  </section> 
+
+  
+  <section>
+    <div className='game'>
+      <h2 style={{color: 'white'}}>Level Up Your Health: Gamify Your Nutrition Journey!</h2>
+      <button>Get Started</button>
+    </div>
+  </section>
   <section>
   <h1 style={{ fontSize: '2.2rem', color: '#2f524d' } }> Features</h1>
   <div className='featurescont'>
@@ -32,18 +47,7 @@ const Home = () => {
       </div>
   </section>
 
-  <section id="about">
-    <div className='nutri' style={{ marginTop: '3rem'}}align='center'>
-      <h1 style={{ fontSize: '2.2rem'} }>About us</h1>
-      <p style={{ fontSize: '20px', margin: '20px' } }>Delta compression using up to 12 threads        
-Compressing objects: 100% (28/28), done.
-Writing objects: 100% (30/30), 174.47 KiB | 3.88 MiB/s, done.
-Total 30 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (1/1), completed with 1 local object.</p>
-      
-    </div>
-
-  </section>
+  
 
   <section>
   <footer className="footer-container" id="contact">
@@ -73,7 +77,7 @@ remote: Resolving deltas: 100% (1/1), completed with 1 local object.</p>
 </footer>
 
   </section>
-
+  
  
         </div>
   );

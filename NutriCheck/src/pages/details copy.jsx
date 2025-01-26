@@ -17,18 +17,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  List,
-  ListItem,
-  ListItemText,
-  Chip,
-  Fade,
-  Zoom,
 } from "@mui/material"
 import MicIcon from "@mui/icons-material/Mic"
 import { Link } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import "../styles/details.css"
-import NutritionalQualityCard from "../components/NutritionalQualityCard"
+import ingredientsIcon from "../images/ingredients.png"
+import allergyIcon from "../images/allergy.png"
 
 const ProductScan = () => {
   const [productName, setProductName] = useState("")
@@ -38,6 +33,7 @@ const ProductScan = () => {
   const [loading, setLoading] = useState(false)
   const [imagePreview, setImagePreview] = useState(null)
   const [mode, setMode] = useState("scan")
+  const [alternatives, setAlternatives] = useState([])
   const { user } = useAuth()
   const [userData, setUserData] = useState(null)
   const webcamRef = useRef(null)
@@ -174,7 +170,14 @@ const ProductScan = () => {
         D: { color: "#fdae61", backgroundColor: "#fee08b" },
         E: { color: "#d7191c", backgroundColor: "#fdae61" },
       },
-      nutriScore: {
+      greenScore: {
+        A: { color: "#00429d", backgroundColor: "#93c5fd" },
+        B: { color: "#4771b2", backgroundColor: "#bfdbfe" },
+        C: { color: "#73a2c6", backgroundColor: "#dbeafe" },
+        D: { color: "#a5c8ca", backgroundColor: "#e0f2fe" },
+        E: { color: "#d8e7eb", backgroundColor: "#f0f9ff" },
+      },
+      carbonFootprint: {
         A: { color: "#006837", backgroundColor: "#a6d96a" },
         B: { color: "#1a9850", backgroundColor: "#d9ef8b" },
         C: { color: "#66bd63", backgroundColor: "#fee08b" },
@@ -191,14 +194,14 @@ const ProductScan = () => {
   }
 
   const renderNutrientChart = () => {
-    if (!productData || !productData.nutritional_values) return null
+    if (!productData || !productData.nutriments) return null
 
-    const significantNutrients = Object.entries(productData.nutritional_values)
+    const significantNutrients = Object.entries(productData.nutriments)
       .filter(([_, value]) => Number.parseFloat(value) > 0.1)
       .sort(([_, a], [__, b]) => Number.parseFloat(b) - Number.parseFloat(a))
       .slice(0, 10)
 
-    const labels = significantNutrients.map(([key, _]) => key.replace(/_/g, " "))
+    const labels = significantNutrients.map(([key, _]) => key)
     const values = significantNutrients.map(([_, value]) => value)
 
     const data = {
@@ -243,6 +246,15 @@ const ProductScan = () => {
         return "Nutritional information is not available for this product."
     }
   }
+
+  const ecoGrade = productData?.ecoscore_grade?.toUpperCase() || "N/A"
+  const greenGrade = productData?.greenscore_grade?.toUpperCase() || "N/A"
+  const carbonGrade = productData?.carbon_footprint_grade?.toUpperCase() || "N/A"
+  const nutriGrade = productData?.nutriscore_grade?.toUpperCase() || "N/A"
+
+  const ecoStyle = getStyle("ecoScore", ecoGrade)
+  const greenStyle = getStyle("greenScore", greenGrade)
+  const carbonStyle = getStyle("carbonFootprint", carbonGrade)
 
   const ScoreCard = ({ title, grade, style }) => (
     <Card
@@ -319,11 +331,11 @@ const ProductScan = () => {
             <MicIcon />
           </IconButton>
         </Grid>
-        {/* <Grid item>
+        <Grid item>
           <Link to="/imgscan">
             <Button>Scan</Button>
           </Link>
-        </Grid> */}
+        </Grid>
       </Grid>
 
       <div className="container1">
@@ -384,56 +396,97 @@ const ProductScan = () => {
 
           <Grid item xs={12} md={6}>
             <div style={{ display: "flex", flexDirection: "column", justifyItems: "space-between" }}>
-              <ScoreCard
-                title="Eco-Score"
-                grade={productData.eco_score}
-                style={getStyle("ecoScore", productData.eco_score)}
-              />
-              <ScoreCard
-                title="Nutri-Score"
-                grade={productData.nutri_score}
-                style={getStyle("nutriScore", productData.nutri_score)}
-              />
+              <ScoreCard title="Eco-Score" grade={ecoGrade} style={ecoStyle} />
+              <ScoreCard title="Green Score" grade={greenGrade} style={greenStyle} />
+              <ScoreCard title="Carbon Footprint" grade={carbonGrade} style={carbonStyle} />
             </div>
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <Card style={{ padding: "20px", height: "100%" }}>
-              <Typography variant="h6" gutterBottom>
-                Ingredients
+          <Grid
+            item
+            xs={12}
+            md={6}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "40px",
+              backgroundColor: "#f5f5f5",
+              padding: "20px",
+            }}
+          >
+            <Card style={{ padding: "20px" }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  variant="h6"
+                  align="left"
+                  style={{
+                    color: "black",
+                    fontWeight: "bold",
+                    marginRight: "8px",
+                    marginBottom: "1rem",
+                    fontSize: "1.5rem",
+                  }}
+                >
+                  Ingredients{" "}
+                </Typography>
+                <img
+                  src={ingredientsIcon || "/placeholder.svg"}
+                  alt="ingredients"
+                  style={{ width: "70px", height: "50px", marginBottom: "1rem", alignSelf: "flex-start" }}
+                  onError={(e) => {
+                    console.error("Error loading ingredients image:", e)
+                    e.target.src = "/placeholder.svg?height=50&width=70"
+                  }}
+                />
+              </div>
+              <Typography align="left" marginBottom={3}>
+                {productData.ingredients_text_en || "No ingredients information available."}
               </Typography>
-              <Typography variant="body1" style={{ whiteSpace: "pre-wrap" }}>
-                {productData.ingredients || "No ingredients information available."}
+            </Card>
+            <Card style={{ padding: "20px", marginTop: "10px" }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  align="left"
+                  variant="h6"
+                  style={{ color: "black", fontWeight: "bold", marginRight: "8px", fontSize: "1.5rem" }}
+                >
+                  Allergens
+                </Typography>
+                <img
+                  src={allergyIcon || "/placeholder.svg"}
+                  alt="allergens"
+                  style={{ width: "70px", height: "70px", marginBottom: "1rem", alignSelf: "flex-start" }}
+                  onError={(e) => {
+                    console.error("Error loading allergy image:", e)
+                    e.target.src = "/placeholder.svg?height=70&width=70"
+                  }}
+                />
+              </div>
+              <Typography align="left" marginBottom={2}>
+                {productData.allergens || "N/A"}
               </Typography>
             </Card>
           </Grid>
 
-          {/* <Grid item xs={12}>
-            <Card style={{ padding: "20px" }}>
-              <Typography variant="h6" gutterBottom>
-                Allergens
-              </Typography>
-              {productData.allergens ? (
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {productData.allergens.split(",").map((allergen, index) => (
-                    <Chip key={index} label={allergen.trim()} color="primary" variant="outlined" />
-                  ))}
-                </div>
-              ) : (
-                <Typography>No allergen information available.</Typography>
-              )}
-            </Card>
-          </Grid> */}
-
           <Grid item xs={12}>
             <Card style={{ padding: "20px" }}>
-              <Typography variant="h6" gutterBottom>
+              <Typography
+                variant="h6"
+                align="left"
+                style={{
+                  color: "black",
+                  fontWeight: "bold",
+                  marginRight: "8px",
+                  marginBottom: "1rem",
+                  fontSize: "1.5rem",
+                }}
+              >
                 Nutrient Levels
               </Typography>
               <Grid container spacing={2}>
-                {Object.entries(productData.nutritional_values || {}).map(([key, value]) => (
+                {Object.entries(productData.nutrient_levels || {}).map(([key, value]) => (
                   <Grid item xs={6} md={3} key={key}>
-                    <Typography>
+                    <Typography align="left">
                       <strong>{key.replace(/_/g, " ")}:</strong> {value || "N/A"}
                     </Typography>
                   </Grid>
@@ -452,40 +505,13 @@ const ProductScan = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <Fade in={true} timeout={1000}>
-              <div>
-                <NutritionalQualityCard nutriScore={productData.nutri_score} getMessage={getNutriScoreMessage} />
-              </div>
-            </Fade>
+            <Card style={{ padding: "20px" }}>
+              <Typography align="left" variant="h6" style={{ marginBottom: "1rem" }}>
+                Nutritional Quality
+              </Typography>
+              <Typography align="left">{getNutriScoreMessage(nutriGrade)}</Typography>
+            </Card>
           </Grid>
-
-          {productData.low_nutrient_warnings && productData.low_nutrient_warnings.length > 0 && (
-            <Grid item xs={12}>
-              <Card style={{ padding: "20px" }}>
-                <Typography align="left" variant="h6" style={{ marginBottom: "1rem" }}>
-                  Low Nutrient Warnings
-                </Typography>
-                <List>
-                  {productData.low_nutrient_warnings.map((warning, index) => (
-                    <ListItem key={index}>
-                      <ListItemText primary={warning} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Card>
-            </Grid>
-          )}
-
-          {productData.carbon_footprint && productData.carbon_footprint !== "N/A" && (
-            <Grid item xs={12}>
-              <Card style={{ padding: "20px" }}>
-                <Typography align="left" variant="h6" style={{ marginBottom: "1rem" }}>
-                  Carbon Footprint
-                </Typography>
-                <Typography align="left">{productData.carbon_footprint} g CO2 eq/100g</Typography>
-              </Card>
-            </Grid>
-          )}
         </Grid>
       )}
 

@@ -125,6 +125,19 @@ function Recommendations() {
         };
 
         fetchRecommendations();
+<<<<<<< HEAD
+
+        axios.get('http://localhost:5001/api/recommendations')
+            .then(response => {
+                console.log(response)
+                setRecommendations(response.data);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the recommendations!', error);
+            });
+
+=======
+>>>>>>> 76974914efeaa8bf4d563e6c2ad0fc5dd32990f3
     }, []);
 
     return (

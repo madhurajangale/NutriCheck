@@ -12,11 +12,16 @@ import WebcamCapture from './components/WebCamCapture';
 import Chat from './components/Chat';
 import GamesBoard from './pages/GamesBoard';
 import Results from './game/results';
-import Quiz from './pages/monthdiet';
+import Quizgame from './pages/monthdiet';
 import Pantrygame from "./game/pantrygame";
 import MonthlyDiet from './pages/Monthlydiet';
 import Dietgame from './pages/monthdiet';
 import Navbar from './components/Navbar';
+<<<<<<< HEAD
+=======
+import Quiz from './game/quiz';
+
+>>>>>>> 40d891d0c71d8b8021c262eb3c88eda6e0ae8579
 function App() {  
   return (
     <div className="App">
@@ -34,8 +39,8 @@ function App() {
           <Route path='/chat' element={<Chat/>}/>
 
           <Route path='/monthlydiet' element={<MonthlyDiet/>}/>
-
-          <Route path="/quiz" element={<Quiz />} />
+          <Route path='/quiz' element={<Quiz/>}/>
+          <Route path="/quizgame" element={<Quizgame />} />
         <Route path="/results" element={<Results />} />
 
         <Route path="/game" element={<GamesBoard />} />

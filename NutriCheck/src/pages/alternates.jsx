@@ -125,6 +125,8 @@ function Recommendations() {
         };
 
         fetchRecommendations();
+
+
         axios.get('http://localhost:5001/api/recommendations')
             .then(response => {
                 console.log(response)

@@ -5,7 +5,7 @@ import '../styles/quiz.css';
 const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { score, total } = location.state;
+  const { score, total, incorrectAnswers } = location.state;
 
   return (
     <div className="results-container">
@@ -16,6 +16,21 @@ const Results = () => {
           ? 'Amazing! You know your nutrition well!'
           : 'Keep learning and try again!'}
       </p>
+
+      {incorrectAnswers.length > 0 && (
+        <div className="incorrect-answers">
+          <h2>Questions You Got Wrong:</h2>
+          {incorrectAnswers.map((item, index) => (
+            <div key={index} className="incorrect-answer-card">
+              <p><strong>Question:</strong> {item.question}</p>
+              <p><strong>Your Answer:</strong> {item.userAnswer}</p>
+              <p><strong>Correct Answer:</strong> {item.correctAnswer}</p>
+              <p><strong>Tip:</strong> {item.tip}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       <button className="play-again-button" onClick={() => navigate('/')}>
         Play Again
       </button>

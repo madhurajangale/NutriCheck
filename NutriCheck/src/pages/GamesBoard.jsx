@@ -7,16 +7,17 @@ const GamesBoard = () => {
       <h1 className={styles.heading}>GamesBoard</h1>
       <div className={styles.cardContainer}>
         <GameCard 
-          title="NutriQuiz" 
+          title="💡NutriQuiz" 
           description="Test your nutrition knowledge" 
-          href="/quiz"
-          bgColor="linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)"
+          href="/quizgame"
+          bgColor="linear-gradient(135deg,rgb(132, 165, 250) 0%,rgb(7, 53, 75) 100%)"
         />
         <GameCard 
-          title="Protein-Pantry" 
+        
+          title="🛒Protein-Pantry" 
           description="Assess your daily protein intake" 
           href="/pantry"
-          bgColor="linear-gradient(135deg, #f6d365 0%, #fda085 100%)"
+          bgColor="linear-gradient(135deg,rgb(118, 67, 22) 0%, #fda085 100%)"
         />
       </div>
     </div>
@@ -27,7 +28,8 @@ const GameCard = ({ title, description, href, bgColor }) => {
   return (
     <a href={href} className={styles.card} style={{ background: bgColor }}>
       <div className={styles.cardContent}>
-        <h2 className={styles.cardTitle}>{title}</h2>
+        
+        <h4 className={styles.cardTitle}>{title}</h4>
         <p className={styles.cardDescription}>{description}</p>
       </div>
     </a>

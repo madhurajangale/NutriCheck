@@ -13,6 +13,7 @@ import Chat from './components/Chat';
 import Quiz from './game/quiz';
 import Results from './game/results';
 import Dietgame from './pages/monthdiet';
+import Navbar from './components/Navbar';
 function App() {  
   return (
     <div className="App">

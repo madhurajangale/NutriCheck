@@ -10,6 +10,7 @@ import {  AuthProvider } from "./context/AuthContext";
 import Imgscan from './components/imgscan';
 import WebcamCapture from './components/WebCamCapture';
 import Chat from './components/Chat';
+import MonthlyDiet from './pages/MonthlyDiet';
 function App() {  
   return (
     <div className="App">
@@ -24,6 +25,7 @@ function App() {
           <Route path='/imgscan' element={<Imgscan/>}/>
           <Route path='/webcam' element={<WebcamCapture/>}/>
           <Route path='/chat' element={<Chat/>}/>
+          <Route path='/monthlydiet' element={<MonthlyDiet/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>

@@ -45,7 +45,6 @@ function Recommendations() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-<<<<<<< HEAD
         const fetchRecommendations = async () => {
             try {
                 const response = await axios.get('http://localhost:5001/api/recommendations');
@@ -62,16 +61,6 @@ function Recommendations() {
         };
 
         fetchRecommendations();
-=======
-        axios.get('http://localhost:5001/api/recommendations')
-            .then(response => {
-                console.log(response)
-                setRecommendations(response.data);
-            })
-            .catch(error => {
-                console.error('There was an error fetching the recommendations!', error);
-            });
->>>>>>> 8e721256145a872789e878f65bc358cda2480af1
     }, []);
 
     return (

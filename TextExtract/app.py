@@ -10,19 +10,23 @@ CORS(app)
 os.environ['GOOGLE_API_KEY'] = 'AIzaSyB6O5E2i17vu4AV0g84NReFjW2U8bLCWPg'
 API_KEY = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=API_KEY)
+
 def prep_image(image_path):
     sample_file = genai.upload_file(path=image_path, display_name="UploadedImage")
     file = genai.get_file(name=sample_file.name)
     return sample_file
+
 def extract_text_from_image(image_path, prompt):
     model = genai.GenerativeModel(model_name="gemini-1.5-pro")
     response = model.generate_content([image_path, prompt])
     return response.text
+
 def extract_ingredients_text(full_text):
     match = re.search(r"(?i)(ingredients:?\s*)(.*?\.)(?=\s|$)", full_text)  
     if match:
         return match.group(2).strip()  
     return None 
+
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
     if 'image' not in request.files:
@@ -49,4 +53,4 @@ def upload_image():
             os.remove(image_path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5500)

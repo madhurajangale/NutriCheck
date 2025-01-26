@@ -14,7 +14,7 @@ const Home = () => {
   return (
     
     <div>
-        <Navbar/>
+        
 
         <div class="container">
     <Landing />

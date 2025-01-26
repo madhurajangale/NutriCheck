@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
-import '../styles/Chat.css';
+import '../styles/chat.css';
 import axios from 'axios';
 import { AuthContext } from "../context/AuthContext";
 import SendIcon from '@mui/icons-material/Send';

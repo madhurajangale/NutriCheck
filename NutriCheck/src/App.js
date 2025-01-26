@@ -9,6 +9,7 @@ import UserSignUp from './Auth/Signup';
 import {  AuthProvider } from "./context/AuthContext";
 import Imgscan from './components/imgscan';
 import WebcamCapture from './components/WebCamCapture';
+import Chat from './components/Chat';
 import Quiz from './game/quiz';
 import Results from './game/results';
 import Dietgame from './pages/monthdiet';
@@ -25,6 +26,7 @@ function App() {
           <Route path='/signup' element={<UserSignUp/>}/>
           <Route path='/imgscan' element={<Imgscan/>}/>
           <Route path='/webcam' element={<WebcamCapture/>}/>
+          <Route path='/chat' element={<Chat/>}/>
           <Route path="/quiz" element={<Quiz />} />
         <Route path="/results" element={<Results />} />
         <Route path="/monthlydiet" element={<Dietgame />} />

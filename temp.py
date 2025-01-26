@@ -92,7 +92,7 @@ def check_low_nutrients(nutrients):
 
 def main():
     
-    product_name = "Maggi Masala Noodles"
+    product_name = "Cadbury Dairy Milk"
     products = search_product_by_name(product_name)
     
     if products:

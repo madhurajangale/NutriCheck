@@ -22,12 +22,12 @@ const Pantrygame = () => {
 
   return (
     <div className="pan">
-      <h1>What's in My Pantry?</h1>
+      <h1 style={{color: 'white'}}>What's in My Pantry?</h1>
       {gameState === "start" && (
         <div>
           <p>Select items you commonly use or consume daily. Click to start!</p>
+          <button onClick={() => startGame(5)}>5 seconds</button>
           <button onClick={() => startGame(10)}>10 seconds</button>
-          <button onClick={() => startGame(15)}>15 seconds</button>
         </div>
       )}
       {gameState === "playing" && (

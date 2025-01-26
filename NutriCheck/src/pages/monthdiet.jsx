@@ -17,8 +17,8 @@ const Home = () => {
   return (
     <div className="home-container">
         <div className='home-content'>
-      <h1 style={{ fontSize: '3rem', marginBottom: '2rem' , backgroundColor: 'white', padding: '1rem', borderRadius: '10px', color: '#279213' }}>🍎 Nutrition Quiz</h1>
-      <h3 style={{fontSize: '1.5rem', marginBottom: '1rem'}}>Select Your Difficulty Level:</h3>
+      <h1 style={{ fontSize: '3rem', backgroundColor: 'white', padding: '1rem', borderRadius: '10px', color: '#279213' }}>🍎<br></br> NutriQuiz</h1>
+      <h3 style={{fontSize: '1.5rem', marginBottom: '1rem', color: 'green'}}>Select Your Difficulty Level:</h3>
       <div className="difficulty-buttons">
         <button 
           className={`difficulty-button ${difficulty === 'easy' ? 'selected' : ''}`}

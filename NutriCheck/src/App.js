@@ -10,10 +10,17 @@ import {  AuthProvider } from "./context/AuthContext";
 import Imgscan from './components/imgscan';
 import WebcamCapture from './components/WebCamCapture';
 import Chat from './components/Chat';
-import Quiz from './game/quiz';
+import GamesBoard from './pages/GamesBoard';
 import Results from './game/results';
+import Quiz from './pages/monthdiet';
+import Pantrygame from "./game/pantrygame";
+import MonthlyDiet from './pages/Monthlydiet';
 import Dietgame from './pages/monthdiet';
 import Navbar from './components/Navbar';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 76974914efeaa8bf4d563e6c2ad0fc5dd32990f3
 function App() {  
   return (
     <div className="App">
@@ -29,9 +36,18 @@ function App() {
           <Route path='/imgscan' element={<Imgscan/>}/>
           <Route path='/webcam' element={<WebcamCapture/>}/>
           <Route path='/chat' element={<Chat/>}/>
+
+          <Route path='/monthlydiet' element={<MonthlyDiet/>}/>
+
           <Route path="/quiz" element={<Quiz />} />
         <Route path="/results" element={<Results />} />
+
+        <Route path="/game" element={<GamesBoard />} />
+        
+        <Route path="/pantry" element={<Pantrygame />} />
+
         <Route path="/monthlydiet" element={<Dietgame />} />
+
         </Routes>
       </BrowserRouter>
       </AuthProvider>

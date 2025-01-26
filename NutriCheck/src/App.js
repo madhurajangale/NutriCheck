@@ -17,10 +17,6 @@ import Pantrygame from "./game/pantrygame";
 import MonthlyDiet from './pages/Monthlydiet';
 import Dietgame from './pages/monthdiet';
 import Navbar from './components/Navbar';
-<<<<<<< HEAD
-=======
-
->>>>>>> 76974914efeaa8bf4d563e6c2ad0fc5dd32990f3
 function App() {  
   return (
     <div className="App">

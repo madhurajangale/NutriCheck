@@ -1,301 +1,101 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-// import { useAuth } from "../context/AuthContext";
-// export default function MonthlyDiet() {
-//   const [products, setProducts] = useState([{ name: "", weight: "" }]);
-//   const [productData, setProductData] = useState({});
-//    const { user } = useAuth();
-//   const [totals, setTotals] = useState({
-//     protein: 0,
-//     carbohydrates: 0,
-//     sodium: 0,
-//     sugars: 0,
-//   });
-//   const [optimalValues, setOptimalValues] = useState({
-//     protein: 0,
-//     carbohydrates: 0,
-//     sodium: 0,
-//     sugars: 0,
-//   });
-// /*************  ✨ Codeium Command ⭐  *************/
-
-
-// /******  b08616ee-ba7c-45d6-a296-1d8656baa75d  *******/
-//   const handleAddProduct = () => {
-//     setProducts([...products, { name: "", weight: "" }]);
-//   };
-
-//   const handleChange = (index, field, value) => {
-//     const updatedProducts = [...products];
-//     updatedProducts[index][field] = value;
-//     setProducts(updatedProducts);
-//   };
-//   const calculateOptimalNutrients = (bmi,weight) => {
-//     let calories = 0;
-//     if (bmi < 18.5) {
-//       calories = 2500; 
-//     } else if (bmi < 24.9) {
-//       calories = 2000; 
-//     } else if (bmi < 29.9) {
-//       calories = 1800; 
-//     } else {
-//       calories = 1500; 
-//     }
-//      console.log(weight)
-//     const carbs = (calories * 0.55) / 4; 
-//     const protein = 0.8*weight; 
-//     const fats = (calories * 0.25) / 9; 
-//     const sodium = 2300; 
-//     const sugars = 25; 
-  
-//     return {
-//       carbohydrates: carbs,
-//       protein: protein,
-//       sodium: sodium / 1000, 
-//       sugars: sugars,
-//     };
-//   };
-//   const fetchProductData = async (productName) => {
-//     try {
-//         const url1 = `http://127.0.0.1:8000/api/user/profile/${user}`
-//         const response1 = await axios.get(url1);
-//         console.log(response1)
-        
-//         const weight=response1.data.data.weight
-//           const height=response1.data.data.height
-//           const bmi = weight / ((height / 100) ** 2);
-//           setOptimalValues(calculateOptimalNutrients(bmi,weight));
-          
-//           console.log(weight)
-//           console.log(height)
-//           console.log(bmi)
-
-          
-//       const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${productName}&search_simple=1&action=process&json=1`;
-//       const response = await axios.get(url);
-//       console.log(response)
-//       if (response.status === 200) {
-//         const data = response.data;
-//         return data.products || [];
-//       } else {
-//         console.error("Error fetching data for:", productName);
-//         return [];
-//       }
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//       return [];
-//     }
-//   };
-
-//   const handleFetchData = async () => {
-//     const fetchedData = {};
-//     let totalProtein = 0;
-//     let totalCarbohydrates = 0;
-//     let totalSodium = 0;
-//     let totalSugars = 0;
-  
-//     for (const product of products) {
-//       if (product.name) {
-//         const data = await fetchProductData(product.name);
-//         fetchedData[product.name] = data;
-  
-        
-//         data.forEach((item) => {
-//           if (item.nutriments) {
-//             const productWeight = parseFloat(item.quantity) || 100;
-//             const userWeight = parseFloat(product.weight) || 0;
-  
-            
-//             totalProtein += calculateNutrientWeight(item.nutriments.proteins, userWeight, productWeight);
-//             totalCarbohydrates += calculateNutrientWeight(item.nutriments.carbohydrates, userWeight, productWeight);
-//             totalSodium += calculateNutrientWeight(item.nutriments.sodium, userWeight, productWeight);
-//             totalSugars += calculateNutrientWeight(item.nutriments.sugars, userWeight, productWeight);
-//           }
-//         });
-//       }
-//     }
-  
-//     setProductData(fetchedData);
-//     setTotals({
-//       protein: totalProtein,
-//       carbohydrates: totalCarbohydrates,
-//       sodium: totalSodium,
-//       sugars: totalSugars,
-//     });
-//   };
-  
-  
-
-//   const calculateNutrientWeight = (nutrientValue = 0, userWeight = 0, productWeight = 100) => {
-//     return productWeight > 0 ? (nutrientValue * userWeight) / productWeight : 0;
-//   };
-
-//   return (
-//     <div className="p-4">
-//       <h1 className="text-xl font-bold mb-4">Monthly Diet Plan</h1>
-
-//       {/* Input Section */}
-//       {products.map((product, index) => (
-//         <div key={index} className="flex items-center gap-4 mb-3">
-//           <input
-//             type="text"
-//             placeholder="Product Name"
-//             value={product.name}
-//             onChange={(e) => handleChange(index, "name", e.target.value)}
-//             className="p-2 border rounded-md"
-//           />
-//           <input
-//             type="number"
-//             placeholder="Weight (g)"
-//             value={product.weight}
-//             onChange={(e) => handleChange(index, "weight", e.target.value)}
-//             className="p-2 border rounded-md"
-//           />
-//           <button
-//             type="button"
-//             onClick={handleAddProduct}
-//             className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-//           >
-//             +
-//           </button>
-//         </div>
-//       ))}
-
-//       <button
-//         onClick={handleFetchData}
-//         className="mt-4 p-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-//       >
-//         Fetch Product Data
-//       </button>
-
-//       {/* Display Section */}
-//       <h2 className="text-lg font-bold mt-6">Fetched Product Data:</h2>
-//       <div className="mt-4">
-//         {Object.keys(productData).length > 0 ? (
-//           Object.entries(productData).map(([name, data]) => (
-//             <div key={name} className="mb-4">
-//               <h3 className="font-bold text-blue-500">{name}:</h3>
-//               {data.length > 0 ? (
-//                 data.slice(0, 1).map((item, index) => (
-//                   <div key={index}>
-//                     <h4 className="font-semibold mt-2">Product Details:</h4>
-//                     <ul className="list-disc list-inside">
-//                       <li>Quantity: {item.quantity || "No Quantity Available"}</li>
-//                     </ul>
-
-//                     <h4 className="font-semibold mt-2">Nutriments:</h4>
-//                     <ul className="list-disc list-inside">
-//                       {item.nutriments &&
-//                         Object.entries(item.nutriments).map(([key, value], idx) => {
-//                           const productWeight = parseFloat(item.quantity) || 100;
-//                           const userWeight = parseFloat(
-//                             products.find((p) => p.name === name)?.weight || 0
-//                           );
-//                           const calculatedValue = calculateNutrientWeight(value, userWeight, productWeight);
-
-//                           return (
-//                             <li key={idx}>
-//                               {key}: {calculatedValue.toFixed(2)} (calculated from {value} per {productWeight}g)
-//                             </li>
-//                           );
-//                         })}
-//                     </ul>
-//                     <ul className="list-disc list-inside">
-//                       {["carbohydrates", "proteins", "sodium", "sugars"].map((key) => {
-//                         const nutrientValue = item.nutriments[key] || 0;
-//                         const productWeight = parseFloat(item.quantity) || 100;
-//                         const userWeight = parseFloat(
-//                           products.find((p) => p.name === name)?.weight || 0
-//                         );
-//                         const calculatedValue = calculateNutrientWeight(
-//                           nutrientValue,
-//                           userWeight,
-//                           productWeight
-//                         );
-
-//                         return (
-//                           <li key={key}>
-//                             {key.charAt(0).toUpperCase() + key.slice(1)}:{" "}
-//                             {calculatedValue.toFixed(2)}g (calculated from {nutrientValue}g per {productWeight}g)
-//                           </li>
-//                         );
-//                       })}
-//                     </ul>
-//                   </div>
-//                 ))
-//               ) : (
-//                 <p>No data available for this product.</p>
-//               )}
-//             </div>
-//           ))
-//         ) : (
-//           <p>No product data fetched yet.</p>
-//         )}
-//       </div>
-//       <div className="mt-6">
-//           <h4 className="font-bold text-lg">Total Nutrients for All Products:</h4>
-//           <ul className="list-disc list-inside">
-//             <li>Protein: {totals.protein.toFixed(2)}g</li>
-//             <li>Carbohydrates: {totals.carbohydrates.toFixed(2)}g</li>
-//             <li>Sodium: {totals.sodium.toFixed(2)}g</li>
-//             <li>Sugars: {totals.sugars.toFixed(2)}g</li>
-//           </ul>
-//         </div>
-//         <div className="mt-6">
-//         <h2 className="text-lg font-bold">Optimal Nutrient Intake:</h2>
-//         <ul className="list-disc list-inside">
-//           <li>Protein: {optimalValues.protein.toFixed(2)}g</li>
-//           <li>Carbohydrates: {optimalValues.carbohydrates.toFixed(2)}g</li>
-//           <li>Sodium: {optimalValues.sodium.toFixed(2)}g</li>
-//           <li>Sugars: {optimalValues.sugars.toFixed(2)}g</li>
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import { useAuth } from "../context/AuthContext"
 import { Bar } from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js"
-import "../styles/MonthlyDiet.css"
+import { motion } from "framer-motion"
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Paper,
+  Grid,
+  IconButton,
+  Chip,
+  CircularProgress,
+  Snackbar,
+} from "@mui/material"
+import { Add, Delete } from "@mui/icons-material"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import NutrientSummary from "../components/NutrientSummary"
+import ProductDataDisplay from "../components/ProductDataDisplay"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-const NutrientChart = ({ actualValues, optimalValues }) => {
-  const data = {
-    labels: ["Protein", "Carbohydrates", "Sodium", "Sugars"],
-    datasets: [
-      {
-        label: "Actual Intake",
-        data: [actualValues.protein, actualValues.carbohydrates, actualValues.sodium, actualValues.sugars],
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-      },
-      {
-        label: "Optimal Intake",
-        data: [optimalValues.protein, optimalValues.carbohydrates, optimalValues.sodium, optimalValues.sugars],
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
-      },
-    ],
-  }
-
-  const options = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#00796b",
     },
-  }
+    secondary: {
+      main: "#004d40",
+    },
+  },
+})
 
-  return <Bar data={data} options={options} />
+const styles = {
+  container: {
+    background: "linear-gradient(120deg, #e0f2f1 0%, #b2dfdb 100%)",
+    minHeight: "100vh",
+    padding: "40px 0",
+  },
+  title: {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 700,
+    fontSize: "3rem",
+    color: "#00796b",
+    textShadow: "2px 2px 4px rgba(0,0,0,0.1)",
+    marginBottom: "30px",
+  },
+  paper: {
+    background: "rgba(255, 255, 255, 0.9)",
+    borderRadius: "15px",
+    boxShadow: "0 8px 32px 0 rgba(0, 121, 107, 0.37)",
+    backdropFilter: "blur(4px)",
+    border: "1px solid rgba(178, 223, 219, 0.18)",
+    padding: "30px",
+    marginBottom: "30px",
+  },
+  addProductTitle: {
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 600,
+    fontSize: "1.5rem",
+    color: "#00796b",
+    marginBottom: "20px",
+  },
+  productInput: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "15px",
+  },
+  textField: {
+    marginRight: "15px",
+    flex: 1,
+  },
+  deleteButton: {
+    color: "#e57373",
+  },
+  addButton: {
+    marginTop: "15px",
+    background: "linear-gradient(45deg, #00796b 30%, #009688 90%)",
+    border: 0,
+    borderRadius: "3px",
+    boxShadow: "0 3px 5px 2px rgba(0, 121, 107, .3)",
+    color: "white",
+    height: "48px",
+    padding: "0 30px",
+  },
+  fetchButton: {
+    background: "linear-gradient(45deg, #004d40 30%, #00695c 90%)",
+    border: 0,
+    borderRadius: "3px",
+    boxShadow: "0 3px 5px 2px rgba(0, 77, 64, .3)",
+    color: "white",
+    height: "48px",
+    padding: "0 30px",
+  },
 }
 
 function MonthlyDiet() {
@@ -314,9 +114,33 @@ function MonthlyDiet() {
     sodium: 0,
     sugars: 0,
   })
+  const [loading, setLoading] = useState(false)
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" })
+
+  useEffect(() => {
+    fetchUserProfile()
+  }, [])
+
+  const fetchUserProfile = async () => {
+    try {
+      const url = `http://127.0.0.1:8000/api/user/profile/${user}`
+      const response = await axios.get(url)
+      const { weight, height } = response.data.data
+      const bmi = weight / (height / 100) ** 2
+      setOptimalValues(calculateOptimalNutrients(bmi, weight))
+    } catch (error) {
+      console.error("Error fetching user profile:", error)
+      setSnackbar({ open: true, message: "Error fetching user profile" })
+    }
+  }
 
   const handleAddProduct = () => {
     setProducts([...products, { name: "", weight: "" }])
+  }
+
+  const handleRemoveProduct = (index) => {
+    const updatedProducts = products.filter((_, i) => i !== index)
+    setProducts(updatedProducts)
   }
 
   const handleChange = (index, field, value) => {
@@ -352,14 +176,6 @@ function MonthlyDiet() {
 
   const fetchProductData = async (productName) => {
     try {
-      const url1 = `http://127.0.0.1:8000/api/user/profile/${user}`
-      const response1 = await axios.get(url1)
-
-      const weight = response1.data.data.weight
-      const height = response1.data.data.height
-      const bmi = weight / (height / 100) ** 2
-      setOptimalValues(calculateOptimalNutrients(bmi, weight))
-
       const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${productName}&search_simple=1&action=process&json=1`
       const response = await axios.get(url)
       if (response.status === 200) {
@@ -376,6 +192,7 @@ function MonthlyDiet() {
   }
 
   const handleFetchData = async () => {
+    setLoading(true)
     const fetchedData = {}
     let totalProtein = 0
     let totalCarbohydrates = 0
@@ -408,6 +225,8 @@ function MonthlyDiet() {
       sodium: totalSodium,
       sugars: totalSugars,
     })
+    setLoading(false)
+    setSnackbar({ open: true, message: "Product data fetched successfully" })
   }
 
   const calculateNutrientWeight = (nutrientValue = 0, userWeight = 0, productWeight = 100) => {
@@ -415,104 +234,81 @@ function MonthlyDiet() {
   }
 
   return (
-    <div className="monthly-diet">
-      <h1>Monthly Diet Plan</h1>
+    <ThemeProvider theme={theme}>
+      <Box sx={styles.container}>
+        <Container maxWidth="lg">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <Typography variant="h2" align="center" gutterBottom style={styles.title}>
+              Monthly Diet Plan
+            </Typography>
+          </motion.div>
 
-      <div className="product-inputs">
-        {products.map((product, index) => (
-          <div key={index} className="product-input">
-            <input
-              type="text"
-              placeholder="Product Name"
-              value={product.name}
-              onChange={(e) => handleChange(index, "name", e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Weight (g)"
-              value={product.weight}
-              onChange={(e) => handleChange(index, "weight", e.target.value)}
-            />
-            <button type="button" onClick={handleAddProduct} className="add-product">
-              +
-            </button>
-          </div>
-        ))}
-      </div>
+          <Paper elevation={3} style={styles.paper}>
+            <Typography variant="h5" gutterBottom style={styles.addProductTitle}>
+              Add Products
+            </Typography>
+            {products.map((product, index) => (
+              <Box key={index} style={styles.productInput}>
+                <TextField
+                  label="Product Name"
+                  variant="outlined"
+                  value={product.name}
+                  onChange={(e) => handleChange(index, "name", e.target.value)}
+                  style={styles.textField}
+                  color="primary"
+                />
+                <TextField
+                  label="Weight (g)"
+                  type="number"
+                  variant="outlined"
+                  value={product.weight}
+                  onChange={(e) => handleChange(index, "weight", e.target.value)}
+                  style={{ ...styles.textField, width: "150px" }}
+                  color="primary"
+                />
+                <IconButton onClick={() => handleRemoveProduct(index)} style={styles.deleteButton}>
+                  <Delete />
+                </IconButton>
+              </Box>
+            ))}
+            <Button variant="contained" startIcon={<Add />} onClick={handleAddProduct} style={styles.addButton}>
+              Add Product
+            </Button>
+          </Paper>
 
-      <button onClick={handleFetchData} className="fetch-data">
-        Fetch Product Data
-      </button>
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
+            <Button
+              variant="contained"
+              onClick={handleFetchData}
+              disabled={loading}
+              size="large"
+              style={styles.fetchButton}
+            >
+              {loading ? <CircularProgress size={24} /> : "Fetch Product Data"}
+            </Button>
+          </Box>
 
-      <div className="product-data">
-        <h2>Fetched Product Data:</h2>
-        {Object.keys(productData).length > 0 ? (
-          Object.entries(productData).map(([name, data]) => (
-            <div key={name} className="product-item">
-              <h3>{name}:</h3>
-              {data.length > 0 ? (
-                data.slice(0, 1).map((item, index) => (
-                  <div key={index}>
-                    <h4>Product Details:</h4>
-                    <ul>
-                      <li>Quantity: {item.quantity || "No Quantity Available"}</li>
-                    </ul>
+          {Object.keys(productData).length > 0 && (
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <ProductDataDisplay productData={productData} products={products} />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <NutrientSummary totals={totals} optimalValues={optimalValues} />
+              </Grid>
+            </Grid>
+          )}
 
-                    <h4>Nutriments:</h4>
-                    <ul>
-                      {["carbohydrates", "proteins", "sodium", "sugars"].map((key) => {
-                        const nutrientValue = item.nutriments[key] || 0
-                        const productWeight = Number.parseFloat(item.quantity) || 100
-                        const userWeight = Number.parseFloat(products.find((p) => p.name === name)?.weight || 0)
-                        const calculatedValue = calculateNutrientWeight(nutrientValue, userWeight, productWeight)
-
-                        return (
-                          <li key={key}>
-                            {key.charAt(0).toUpperCase() + key.slice(1)}: {calculatedValue.toFixed(2)}g (calculated from{" "}
-                            {nutrientValue}g per {productWeight}g)
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  </div>
-                ))
-              ) : (
-                <p>No data available for this product.</p>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>No product data fetched yet.</p>
-        )}
-      </div>
-
-      <div className="nutrient-summary">
-        <h2>Nutrient Summary</h2>
-        <div className="nutrient-chart">
-          <NutrientChart actualValues={totals} optimalValues={optimalValues} />
-        </div>
-        <div className="total-nutrients">
-          <h3>Total Nutrients for All Products:</h3>
-          <ul>
-            <li>Protein: {totals.protein.toFixed(2)}g</li>
-            <li>Carbohydrates: {totals.carbohydrates.toFixed(2)}g</li>
-            <li>Sodium: {totals.sodium.toFixed(2)}g</li>
-            <li>Sugars: {totals.sugars.toFixed(2)}g</li>
-          </ul>
-        </div>
-        <div className="optimal-nutrients">
-          <h3>Optimal Nutrient Intake:</h3>
-          <ul>
-            <li>Protein: {optimalValues.protein.toFixed(2)}g</li>
-            <li>Carbohydrates: {optimalValues.carbohydrates.toFixed(2)}g</li>
-            <li>Sodium: {optimalValues.sodium.toFixed(2)}g</li>
-            <li>Sugars: {optimalValues.sugars.toFixed(2)}g</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+          <Snackbar
+            open={snackbar.open}
+            autoHideDuration={6000}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            message={snackbar.message}
+          />
+        </Container>
+      </Box>
+    </ThemeProvider>
   )
 }
 
 export default MonthlyDiet
-

@@ -10,11 +10,14 @@ import {  AuthProvider } from "./context/AuthContext";
 import Imgscan from './components/imgscan';
 import WebcamCapture from './components/WebCamCapture';
 import Chat from './components/Chat';
+import Navbar from './components/Navbar';
+import ProductScan from './pages/demo';
 function App() {  
   return (
     <div className="App">
       <AuthProvider>
       <BrowserRouter>
+      < Navbar/>
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/details' element={<ProductInfo/>}/>
@@ -24,6 +27,7 @@ function App() {
           <Route path='/imgscan' element={<Imgscan/>}/>
           <Route path='/webcam' element={<WebcamCapture/>}/>
           <Route path='/chat' element={<Chat/>}/>
+          <Route path='/demo' element={<ProductScan/>}/>
         </Routes>
       </BrowserRouter>
       </AuthProvider>

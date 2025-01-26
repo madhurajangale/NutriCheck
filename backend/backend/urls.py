@@ -12,5 +12,5 @@ urlpatterns = [
     path('api/user/profile/<str:email>', UserProfileView.as_view(), name='profile'),
     path('api/user/profile/edit/<str:email>', UserProfileEditView.as_view(), name='profile_edit'),
     path('api/combined/<str:email>/<str:product_name>', CombinedView.as_view(), name='combined_view'),
-    path("api/extract-text/", include("textExtract.urls")),
+  
 ]
